@@ -7,8 +7,10 @@ export default function Main() {
   // selected
   // const [freeze, setFreeze] = React.useState(false)
   // console.log(nums)
+  const [tenzies, seTenzies] = React.useState(() => false)
 
   function rollDies(arr, finish = false) {
+    seTenzies(false)
     return arr.map((n, index) => {
       return n.freeze !== true || finish
         ? { ...n, body: getRandomNumber(6), freeze: false, key: index }
@@ -18,42 +20,54 @@ export default function Main() {
 
   const [numsData, setNumsData] = React.useState(() => rollDies(nums))
 
-  // !check if game finished or not
-  React.useEffect(() => {
-    let freeze = 0
-    // freeze
-    for (let index = 0; index < numsData.length; index++) {
-      if (numsData[index].freeze) {
-        freeze++
-      }
-    }
+  // !check if game finished or not and won or not
+  // React.useEffect(() => {
+  //   let freeze = 0
+  //   // freeze
+  //   for (let index = 0; index < numsData.length; index++) {
+  //     if (numsData[index].freeze) {
+  //       freeze++
+  //     }
+  //   }
 
-    let success = 0
-    // success
-    if (freeze === numsData.length) {
-      console.log(numsData)
-      for (let s = 0; s < numsData.length - 1; s++) {
-        if (numsData[s].body === numsData[s + 1].body) {
-          success++
-        }
-      }
-      // alert success
-      console.log('freeze + success :', freeze, success, numsData.length)
-      if (success + 1 === numsData.length) {
-        alert('congrats')
-        setNumsData((old) => rollDies(old, true))
-      } else {
-        alert('wrong freeze')
-      }
+  //   let success = 0
+  //   // success
+  //   if (freeze === numsData.length) {
+  //     console.log(numsData)
+  //     for (let s = 0; s < numsData.length - 1; s++) {
+  //       if (numsData[s].body === numsData[s + 1].body) {
+  //         success++
+  //       }
+  //     }
+  //     // alert success
+  //     console.log('freeze + success :', freeze, success, numsData.length)
+  //     if (success + 1 === numsData.length) {
+  //       alert('congrats')
+  //       setNumsData((old) => rollDies(old, true))
+  //       seTenzies(true)
+  //     } else {
+  //       alert('wrong freeze')
+  //     }
+  //   }
+  // }, [numsData])
+
+  // ! use every(and there is a some method) // return true or false
+  React.useEffect(() => {
+    const allFreeze = numsData.every((num) => num.freeze)
+    const firstNumBody = numsData[0].body
+    const sameBody = numsData.every((num) => num.body === firstNumBody)
+    if (allFreeze && sameBody) {
+      seTenzies(true)
+      console.log('you won')
     }
   }, [numsData])
+  //!---------------------------------------------------------------
 
   function handelRollDies() {
     setNumsData((old) => rollDies(old))
   }
 
-  //! the problem is here
-  //! why its not working
+  // Handel what happen when click on box (dice)
   function handelFreeze(id) {
     setNumsData((prevNumsData) =>
       prevNumsData.map((numData) => {
