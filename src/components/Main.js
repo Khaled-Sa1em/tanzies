@@ -2,6 +2,7 @@ import React from 'react'
 import '../css/components/Main.css'
 import Box from './Box'
 import nums from '../data/nums.json'
+import ConfettiMethod from './confettiComponent'
 
 export default function Main() {
   // selected
@@ -21,41 +22,12 @@ export default function Main() {
   const [numsData, setNumsData] = React.useState(() => rollDies(nums))
 
   // !check if game finished or not and won or not
-  // React.useEffect(() => {
-  //   let freeze = 0
-  //   // freeze
-  //   for (let index = 0; index < numsData.length; index++) {
-  //     if (numsData[index].freeze) {
-  //       freeze++
-  //     }
-  //   }
-
-  //   let success = 0
-  //   // success
-  //   if (freeze === numsData.length) {
-  //     console.log(numsData)
-  //     for (let s = 0; s < numsData.length - 1; s++) {
-  //       if (numsData[s].body === numsData[s + 1].body) {
-  //         success++
-  //       }
-  //     }
-  //     // alert success
-  //     console.log('freeze + success :', freeze, success, numsData.length)
-  //     if (success + 1 === numsData.length) {
-  //       alert('congrats')
-  //       setNumsData((old) => rollDies(old, true))
-  //       seTenzies(true)
-  //     } else {
-  //       alert('wrong freeze')
-  //     }
-  //   }
-  // }, [numsData])
-
   // ! use every(and there is a some method) // return true or false
   React.useEffect(() => {
     const allFreeze = numsData.every((num) => num.freeze)
     const firstNumBody = numsData[0].body
     const sameBody = numsData.every((num) => num.body === firstNumBody)
+    seTenzies(false)
     if (allFreeze && sameBody) {
       seTenzies(true)
       console.log('you won')
@@ -63,8 +35,8 @@ export default function Main() {
   }, [numsData])
   //!---------------------------------------------------------------
 
-  function handelRollDies() {
-    setNumsData((old) => rollDies(old))
+  function handelRollDies(finish = false) {
+    setNumsData((old) => rollDies(old, finish))
   }
 
   // Handel what happen when click on box (dice)
@@ -110,6 +82,7 @@ export default function Main() {
   // console.log('getArrayOfRandoms', getArrayOfRandoms(12, 6))
   return (
     <main className="main">
+      {tenzies && <ConfettiMethod />}
       <div className="container raw">
         <h1>Tenzies</h1>
         <p>
@@ -118,8 +91,11 @@ export default function Main() {
         </p>
         <div className="boxes">{boxes.length ? boxes : '😒no boxes'}</div>
 
-        <button className="btn btn-roll" onClick={handelRollDies}>
-          Roll
+        <button
+          className="btn btn-roll"
+          onClick={() => handelRollDies(tenzies)}
+        >
+          {tenzies ? 'New Game' : 'Roll'}
         </button>
       </div>
     </main>

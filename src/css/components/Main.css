@@ -29,11 +29,14 @@
 .btn {
   margin-top: 2em;
   cursor: pointer;
-  width: 5em;
-  aspect-ratio: 2.6/1;
+  /* width: 5em; */
+  padding-block: 0.5em;
+  padding-inline: 1em;
+  /* aspect-ratio: 2.6/1; */
   display: grid;
   place-items: center;
   font-size: 1.5rem;
+  font-weight: bold;
   letter-spacing: 4px;
   color: white;
   background: #5035ff;
