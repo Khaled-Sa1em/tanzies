@@ -2,7 +2,8 @@ import React from 'react'
 import '../css/components/Main.css'
 import Box from './Box'
 import nums from '../data/nums.json'
-import ConfettiMethod from './confettiComponent'
+import Confetti from 'react-confetti'
+
 
 export default function Main() {
   // selected
@@ -82,7 +83,7 @@ export default function Main() {
   // console.log('getArrayOfRandoms', getArrayOfRandoms(12, 6))
   return (
     <main className="main">
-      {tenzies && <ConfettiMethod />}
+      {tenzies && <Confetti />}
       <div className="container raw">
         <h1>Tenzies</h1>
         <p>
